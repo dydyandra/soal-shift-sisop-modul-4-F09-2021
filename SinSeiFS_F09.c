@@ -182,16 +182,17 @@ char* getDirFile(char* path){
 }
 
 
-
 static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 		       off_t offset, struct fuse_file_info *fi)
 {
-	char fullPath[1000];
+    // path = /abcde
+    char fullPath[1000];
     memset(fullPath, 0, 1000) ;
-    // flagGlobal = 0 ;
+    flagGlobal = 0 ;
     strcpy(fullPath, getDirFile(path)) ;
 
-    DIR *dp;
+    int res = 0 ;
+	DIR *dp;
 	struct dirent *de;
 
 	(void) offset;
@@ -206,9 +207,68 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 		memset(&st, 0, sizeof(st));
 		st.st_ino = de->d_ino;
 		st.st_mode = de->d_type << 12;
+
+        if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0) {
+            res = (filler(buf, de->d_name, &st, 0)) ;
+        }
+        else if (flagGlobal) {
+            if (de->d_type & DT_DIR) {
+                char temp[1024] ;
+                memset(temp, 0, 1024) ;
+                strcpy(temp, de->d_name) ;
+                int j;
+                for(j = 0; j<strlen(temp); j++){
+                        if(temp[j] >= 'A' && temp[j] <= 'Z'){
+                        temp[j] = 'Z' + 'A' - temp[j];
+                    }
+
+                    else if (temp[j] >= 'a' && temp[j] <= 'z'){
+                        temp[j] = 'z' + 'a' - temp[j];
+                    }
+                }
+                res = (filler(buf, temp, &st, 0));
+            }
+            else {
+                char* dot ;
+                dot = strchr(de->d_name, '.') ;
+                
+                char namaFile[1024] ;
+                memset(namaFile, 0, 1024) ;
+                if (dot) {
+                    strncpy(namaFile, de->d_name, strlen(de->d_name) - strlen(dot)) ;
+                        int i;
+                        for(i = 0; i<strlen(namaFile); i++){
+                            if(namaFile[i] >= 'A' && namaFile[i] <= 'Z'){
+                                namaFile[i] = 'Z' + 'A' - namaFile[i];
+                            }
+
+                            else if (namaFile[i] >= 'a' && namaFile[i] <= 'z'){
+                                namaFile[i] = 'z' + 'a' - namaFile[i];
+                            }
+                        }
+                    strcat(namaFile, dot) ;
+                }
+                else {
+                    strcpy(namaFile, de->d_name) ;
+                        int i;
+                        for(i = 0; i<strlen(namaFile); i++){
+                            if(namaFile[i] >= 'A' && namaFile[i] <= 'Z'){
+                                namaFile[i] = 'Z' + 'A' - namaFile[i];
+                            }
+
+                            else if (namaFile[i] >= 'a' && namaFile[i] <= 'z'){
+                                namaFile[i] = 'z' + 'a' - namaFile[i];
+                            }
+                        }
+                }
+                res = (filler(buf, namaFile, &st, 0));
+            }
+        }
+        else 
+            res = (filler(buf, de->d_name, &st, 0));
         
-		if (filler(buf, de->d_name, &st, 0))
-			break;
+
+        if(res!=0) break;
 	}
 
 	closedir(dp);
@@ -257,10 +317,49 @@ static  int  xmp_getattr(const char *path, struct stat *stbuf)
     return 0;
 }
 
+void log_rename(char *src, char *dst){
+    char *lastSlash = strchr(dst, '/');
+    if (strstr(lastSlash, "/AtoZ_")) {
+        char t1[1024] ; bzero(t1, 1024) ;
+        char t2[1024] ; bzero(t2, 1024) ;
+        sprintf(t1, "%s%s", dirpath, src) ;
+        sprintf(t2, "%s%s", dirpath, dst) ;
+        logRecord(t1, t2, 1) ;
+    }
+}
+
+
+void log_mkdir(char *path){
+    char* lastSlash = strchr(path, '/') ;
+    if (strstr(lastSlash, "/AtoZ_")) {
+    char temp[1024] ; bzero(temp, 1024) ;
+    sprintf(temp, "%s%s", dirpath, path) ;
+    logRecord("null", temp, 2) ;
+    }
+}
+
+void logRecord(char old_dir[], char new_dir[], int mode) {
+    FILE* file = fopen("encode.log", "a") ;
+
+    char str[2048] ;
+    if (mode == 1) {
+        sprintf(str, "%s --> %s", old_dir, new_dir) ;
+
+        fprintf(file, "%s\n", str) ;
+    }
+    else if (mode == 2) {
+        sprintf(str, "%s", new_dir) ;
+
+        fprintf(file, "%s\n", str) ;
+    }
+
+    fclose(file) ;
+}
 
 static int xmp_rename(const char *from, const char *to)
 {
 
+    log_rename(from, to);
     char f_from[2048]; 
     char f_to[2048];
     memset(f_from, 0, sizeof(f_from)) ; 
@@ -281,7 +380,7 @@ static int xmp_rename(const char *from, const char *to)
 
 static int xmp_mkdir(const char *path, mode_t mode)
 {
-
+    log_mkdir(path);
     char fullPath[2048] ;
     memset(fullPath, 0, sizeof(fullPath)) ;
     strcpy(fullPath, getDirFile(path)) ;
