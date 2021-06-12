@@ -286,6 +286,16 @@ void logRecord(char old_dir[], char new_dir[], int mode) {
 ```
 
 
+## Penjelasan No. 4
+Untuk memudahkan dalam memonitor kegiatan pada filesystem mereka Sin dan Sei membuat sebuah log system dengan spesifikasi sebagai berikut.
+
+### a. Log system yang akan terbentuk bernama “SinSeiFS.log” pada direktori home pengguna (/home/[user]/SinSeiFS.log).
+### b. Log yang dibuat akan dibagi menjadi dua level, yaitu INFO dan WARNING.
+### c. Untuk log level WARNING, digunakan untuk mencatat syscall rmdir dan unlink.
+### d. Sisanya, akan dicatat pada level INFO.
+### e. MFormat untuk logging yaitu: [Level]::[dd][mm][yyyy]-[HH]:[MM]:[SS]:[CMD]::[DESC :: DESC]
+
+## Cara Penyelesaian Nomor 4
 
 
 
