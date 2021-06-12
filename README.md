@@ -305,4 +305,7 @@ Kemudian membuat fungsi yang akan digunakan untuk melakukan logging.
 Source code
 ```
 Fungsi tersebut akan membuat log system sesuai dengan spesifikasi yang telah ditentukan.
-  
+- `level` digunakan untuk mendefinisikan level dari atribut yang berjalan (INFO atau WARNING).
+- `cmd` digunakan untuk mendefinisikan command _system-call_ yang terpanggil.
+- `desctotal` digunakan untuk menyimpan banyaknya DESC yang akan ditulis di dalam log.
+- `*desc[]` digunakan untuk menyimpan _array of string_ dari DESC yang akan ditulis.
