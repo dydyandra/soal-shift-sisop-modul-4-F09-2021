@@ -16,27 +16,29 @@ static  const  char *logpath = "/home/muthia/SinSeiFS.log";
 char *en1 = "/AtoZ_";
 int flagGlobal;
 
-struct data {
-    char command[100];
-    char desc[100];
-};
+//struct data {
+//    char command[100];
+//    char desc[100];
+//};
 
 // Membuat Log
-void mklog(char *sys_call, struct data data){
-    FILE * LOGFILE = fopen(logpath, "a");
-	time_t now;
-	time (&now);
-	struct tm * timeinfo = localtime (&now);
+void mklog(char* level, char* cmd, int desctotal, const char* desc[])
+{
+    FILE* file = fopen(sysLog, "a");
 
-	if(strcmp(sys_call,"RMDIR")==0 || strcmp(sys_call,"UNLINK")==0){
-		fprintf(LOGFILE, "WARNING::%d%02d%02d-%02d:%02d:%02d:%s::/%s\n",timeinfo->tm_mday, timeinfo->tm_mon+1, timeinfo->tm_year+1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, data.command, data.desc);
-	}else{
-		fprintf(LOGFILE, "INFO::%d%02d%02d-%02d:%02d:%02d:%s::/%s\n",timeinfo->tm_mday, timeinfo->tm_mon+1, timeinfo->tm_year+1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, data.command, data.desc);
-    	}
+    time_t now;
+    time(&now);
 
-    fclose(LOGFILE);
-    return;
+    struct tm* t = localtime(&now);
+    fprintf(file, "%s::%s::%02d%02d%04d-%02d:%02d:%02d", level, cmd, t->tm_mday, t->tm_mon+1, t->tm_year+1900, t->tm_hour, t->tm_min, t->tm_sec);
+    for (int i = 0; i < desctotal; i++)
+    {
+        fprintf(file, "::%s", desc[i]);
+    }
+    fprintf(file, "\n");
+    fclose(file);
 }
+
 
 char* getDirFile(char* path){
     char fullPath[2048];
@@ -295,6 +297,9 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 	}
 
 	closedir(dp);
+
+	const char* desc[] = {path};
+	mklog("INFO", "READDIR", 1, desc);
 	return 0;
 }
 
@@ -322,6 +327,8 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset, stru
 
     close(fd);
 
+    const char* desc[] = {path};
+    mklog("INFO", "READ", 1, desc);
     return res;
 }
 
@@ -337,6 +344,9 @@ static  int  xmp_getattr(const char *path, struct stat *stbuf)
     res = lstat(fullPath, stbuf);
 
     if (res == -1) return -errno;
+
+    const char* desc[] = {path};
+    mklog("INFO", "READ", 1, desc);
     return 0;
 }
 
@@ -396,8 +406,8 @@ static int xmp_rename(const char *from, const char *to)
 	if (res == -1)
 		return -errno;
 
-    //struct data input_data;
-    //mklog("RENAME",input_data);
+        const char* desc[] = {from, to};
+        mklog("INFO", "RENAME", 2, desc);
 
 	return 0;
 }
@@ -416,6 +426,9 @@ static int xmp_mkdir(const char *path, mode_t mode)
 	res = mkdir(fullPath, mode);
 	if (res == -1)
 		return -errno;
+
+        const char* desc[] = {path};
+        mklog("INFO", "MKDIR", 1, desc);
 
 	return 0;
 }
