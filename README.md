@@ -293,10 +293,16 @@ Untuk memudahkan dalam memonitor kegiatan pada filesystem mereka Sin dan Sei mem
 ### b. Log yang dibuat akan dibagi menjadi dua level, yaitu INFO dan WARNING.
 ### c. Untuk log level WARNING, digunakan untuk mencatat syscall rmdir dan unlink.
 ### d. Sisanya, akan dicatat pada level INFO.
-### e. MFormat untuk logging yaitu: [Level]::[dd][mm][yyyy]-[HH]:[MM]:[SS]:[CMD]::[DESC :: DESC]
+### e. Format untuk logging yaitu: [Level]::[dd][mm][yyyy]-[HH]:[MM]:[SS]:[CMD]::[DESC :: DESC]
 
 ## Cara Penyelesaian Nomor 4
-
-
-
+Mendefinisikan path dari file log yang akan diproses 
+```
+static  const  char *logpath = "/home/muthia/SinSeiFS.log"; 
+```
+Kemudian membuat fungsi yang akan digunakan untuk melakukan logging.
+```
+Source code
+```
+Fungsi tersebut akan membuat log system sesuai dengan spesifikasi yang telah ditentukan.
   
