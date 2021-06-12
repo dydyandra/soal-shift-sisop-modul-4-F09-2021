@@ -302,7 +302,22 @@ static  const  char *logpath = "/home/muthia/SinSeiFS.log";
 ```
 Kemudian membuat fungsi yang akan digunakan untuk melakukan logging.
 ```
-Source code
+void mklog(char* level, char* cmd, int desctotal, const char* desc[])
+{
+    FILE* file = fopen(sysLog, "a");
+
+    time_t now;
+    time(&now);
+
+    struct tm* t = localtime(&now);
+    fprintf(file, "%s::%s::%02d%02d%04d-%02d:%02d:%02d", level, cmd, t->tm_mda>
+    for (int i = 0; i < desctotal; i++)
+    {
+        fprintf(file, "::%s", desc[i]);
+    }
+    fprintf(file, "\n");
+    fclose(file);
+}
 ```
 Fungsi tersebut akan membuat log system sesuai dengan spesifikasi yang telah ditentukan.
 - `level` digunakan untuk mendefinisikan level dari atribut yang berjalan (INFO atau WARNING).
