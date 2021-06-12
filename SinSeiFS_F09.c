@@ -7,13 +7,36 @@
 #include <dirent.h>
 #include <errno.h>
 #include <sys/time.h>
-#include<stdbool.h>  
+#include <stdbool.h>  
 
 
-static  const  char *dirpath = "/home/dyandra/Downloads";
+static  const  char *dirpath = "/home/muthia/Downloads";
+static  const  char *logpath = "/home/muthia/SinSeiFS.log"; 
+
 char *en1 = "/AtoZ_";
 int flagGlobal;
 
+struct data {
+    char command[100];
+    char desc[100];
+};
+
+// Membuat Log
+void mklog(char *sys_call, struct data data){
+    FILE * LOGFILE = fopen(logpath, "a");
+	time_t now;
+	time (&now);
+	struct tm * timeinfo = localtime (&now);
+
+	if(strcmp(sys_call,"RMDIR")==0 || strcmp(sys_call,"UNLINK")==0){
+		fprintf(LOGFILE, "WARNING::%d%02d%02d-%02d:%02d:%02d:%s::/%s\n",timeinfo->tm_mday, timeinfo->tm_mon+1, timeinfo->tm_year+1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, data.command, data.desc);
+	}else{
+		fprintf(LOGFILE, "INFO::%d%02d%02d-%02d:%02d:%02d:%s::/%s\n",timeinfo->tm_mday, timeinfo->tm_mon+1, timeinfo->tm_year+1900, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, data.command, data.desc);
+    	}
+
+    fclose(LOGFILE);
+    return;
+}
 
 char* getDirFile(char* path){
     char fullPath[2048];
@@ -372,6 +395,9 @@ static int xmp_rename(const char *from, const char *to)
 	res = rename(f_from, f_to);
 	if (res == -1)
 		return -errno;
+
+    //struct data input_data;
+    //mklog("RENAME",input_data);
 
 	return 0;
 }
