@@ -286,6 +286,26 @@ void logRecord(char old_dir[], char new_dir[], int mode) {
 ```
 ### Kendala yang Dialami
 - Kurang mengerti dengan penggunaan Fuse sehingga masih berusaha untuk mengerjakan soal
+### Hasil Screenshot 
+- Untuk meng-compile dan run program. Folder Downloads nanti akan dimount di path /modul4/coba
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/1_1.png">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/1_2.png">
+
+- Saat melakukan pembuatan direktori (saat dimount di Fuse). 
+Perbandingan antara nama di path Downloads dan di FUSE. 
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/1_3.png">
+
+Saat pembuatan mkdir baru saat sudah dimount. 
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/1_5.png">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/1_6.png">
+
+- Saat melakukan rename
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/11.png">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/12.png">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/13.png">
+
+- Isi log 
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/14.png">
 
 ## Penjelasan No. 4
 Untuk memudahkan dalam memonitor kegiatan pada filesystem mereka Sin dan Sei membuat sebuah log system dengan spesifikasi sebagai berikut.
