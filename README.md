@@ -284,7 +284,8 @@ void logRecord(char old_dir[], char new_dir[], int mode) {
     fclose(file) ;
 }
 ```
-
+### Kendala yang Dialami
+- Kurang mengerti dengan penggunaan Fuse sehingga masih berusaha untuk mengerjakan soal
 
 ## Penjelasan No. 4
 Untuk memudahkan dalam memonitor kegiatan pada filesystem mereka Sin dan Sei membuat sebuah log system dengan spesifikasi sebagai berikut.
