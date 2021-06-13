@@ -300,12 +300,12 @@ Saat pembuatan mkdir baru saat sudah dimount.
 <img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/1_6.png">
 
 - Saat melakukan rename
-<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/11.png">
-<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/12.png">
-<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/13.png">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/11.PNG">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/12.PNG">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/13.PNG">
 
 - Isi log 
-<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/14.png">
+<img src="https://github.com/dydyandra/soal-shift-sisop-modul-4-F09-2021/blob/master/screenshot/14.PNG">
 
 ## Penjelasan No. 4
 Untuk memudahkan dalam memonitor kegiatan pada filesystem mereka Sin dan Sei membuat sebuah log system dengan spesifikasi sebagai berikut.
